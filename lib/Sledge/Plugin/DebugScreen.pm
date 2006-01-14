@@ -1,11 +1,48 @@
 package Sledge::Plugin::DebugScreen;
 use strict;
 use warnings;
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Template;
 use Devel::StackTrace;
 use IO::File;
+
+{
+    package Sledge::Exception::StackTrace;
+    sub print_context {
+        my $self = shift;
+        my($file, $linenum) = ($self->file, $self->line);
+        my $code;
+        if (-f $file) {
+            my $start = $linenum - 3;
+            my $end   = $linenum + 3;
+            $start = $start < 1 ? 1 : $start;
+            if (my $fh = IO::File->new($file, 'r')) {
+                my $cur_line = 0;
+                while (my $line = <$fh>) {
+                    ++$cur_line;
+                    last if $cur_line > $end;
+                    next if $cur_line < $start;
+                    my @tag = $cur_line == $linenum ? qw(<b> </b>) : ('', '');
+                    $code .= sprintf(
+                        '%s%5d: %s%s',
+                            $tag[0], $cur_line, $self->_html_escape($line), $tag[1],
+                    );
+                }
+            }
+        }
+        return $code;
+    }
+
+    sub _html_escape {
+        my ($self, $str) = @_;
+        $str =~ s/&/&amp;/g;
+        $str =~ s/</&lt;/g;
+        $str =~ s/>/&gt;/g;
+        $str =~ s/"/&quot;/g;
+        return $str;
+    }
+}
 
 our $TEMPLATE = q{
 <?xml version="1.0" encoding="euc-jp"?>
@@ -106,43 +143,6 @@ our $TEMPLATE = q{
 </html>
 };
 
-{
-    package Sledge::Exception::StackTrace;
-    sub print_context {
-        my $self = shift;
-        my($file, $linenum) = ($self->file, $self->line);
-        my $code;
-        if (-f $file) {
-            my $start = $linenum - 3;
-            my $end   = $linenum + 3;
-            $start = $start < 1 ? 1 : $start;
-            if (my $fh = IO::File->new($file, 'r')) {
-                my $cur_line = 0;
-                while (my $line = <$fh>) {
-                    ++$cur_line;
-                    last if $cur_line > $end;
-                    next if $cur_line < $start;
-                    my @tag = $cur_line == $linenum ? qw(<b> </b>) : ('', '');
-                    $code .= sprintf(
-                        '%s%5d: %s%s',
-                            $tag[0], $cur_line, $self->_html_escape($line), $tag[1],
-                    );
-                }
-            }
-        }
-        return $code;
-    }
-
-    sub _html_escape {
-        my ($self, $str) = @_;
-        $str =~ s/&/&amp;/g;
-        $str =~ s/</&lt;/g;
-        $str =~ s/>/&gt;/g;
-        $str =~ s/"/&quot;/g;
-        return $str;
-    }
-}
-
 sub import {
     my $self = shift;
     my $pkg  = caller;
@@ -224,19 +224,18 @@ Screen image: L<http://image.blog.livedoor.jp/nipotan/imgs/a/2/a2b67309.jpg>
 
 =head1 AUTHOR
 
-    MATSUNO Tokuhiro E<lt>tokuhiro at mobilefactory.jpE<gt>
+    MATSUNO Tokuhiro <tokuhiro at mobilefactory.jp>
     Koichi Taniguchi <taniguchi@livedoor.jp>
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
-=head1 BUGS
-
-This module requires TT2.
-But, I don't know Sledge::Template user ;-)
-
 =head1 DEPENDENCIES
 
-L<Template>, L<Bundle::Sledge>, L<Devel::StackTrace>, L<Catalyst::Plugin::StackTrace>
+L<Template>, L<Bundle::Sledge>, L<Devel::StackTrace>
+
+=head1 SEE ALSO
+
+L<Catalyst::Plugin::StackTrace>
 
 =cut

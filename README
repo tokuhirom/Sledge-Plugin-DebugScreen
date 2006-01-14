@@ -16,16 +16,15 @@ DESCRIPTION
     <http://image.blog.livedoor.jp/nipotan/imgs/a/2/a2b67309.jpg>
 
 AUTHOR
-        MATSUNO Tokuhiro E<lt>tokuhiro at mobilefactory.jpE<gt>
+        MATSUNO Tokuhiro <tokuhiro at mobilefactory.jp>
         Koichi Taniguchi <taniguchi@livedoor.jp>
 
     This library is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.
 
-BUGS
-    This module requires TT2. But, I don't know Sledge::Template user ;-)
-
 DEPENDENCIES
-    Template, Bundle::Sledge, Devel::StackTrace,
+    Template, Bundle::Sledge, Devel::StackTrace
+
+SEE ALSO
     Catalyst::Plugin::StackTrace
 
