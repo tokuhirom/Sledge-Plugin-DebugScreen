@@ -1,7 +1,7 @@
 package Sledge::Plugin::DebugScreen;
 use strict;
 use warnings;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Template;
 use Devel::StackTrace;
@@ -172,6 +172,8 @@ sub _handle_exception {
     return if $self->finished;
 
     if ($self->debug_level) {
+        warn $E;
+
         my $vars = {
             title => ref $self || $self,
             desc  => "$E",
@@ -229,6 +231,14 @@ Screen image: L<http://image.blog.livedoor.jp/nipotan/imgs/a/2/a2b67309.jpg>
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
+
+=head1 THANKS TO
+
+Jiro Nishiguchi.
+
+=head1 TODO
+
+more tests.
 
 =head1 DEPENDENCIES
 
