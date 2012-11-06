@@ -2,6 +2,7 @@ package Sledge::Plugin::DebugScreen;
 use strict;
 use warnings;
 our $VERSION = '0.07';
+use 5.008001;
 
 use Template;
 use Devel::StackTrace;
@@ -226,7 +227,7 @@ Screen image: L<http://image.blog.livedoor.jp/nipotan/imgs/a/2/a2b67309.jpg>
 
 =head1 AUTHOR
 
-    MATSUNO Tokuhiro <tokuhiro at mobilefactory.jp>
+    MATSUNO Tokuhiro <tokuhirom@gmail.com>
     Koichi Taniguchi <taniguchi@livedoor.jp>
 
 This library is free software; you can redistribute it and/or modify
