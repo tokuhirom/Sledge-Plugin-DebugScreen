@@ -24,7 +24,7 @@ provides:
     version: 0
   Sledge::Plugin::DebugScreen:
     file: lib/Sledge/Plugin/DebugScreen.pm
-    version: 0.07
+    version: 0.08
 requires:
   Devel::StackTrace: 1.12
   IO::File: 1.1
@@ -32,4 +32,4 @@ requires:
   perl: 5.008001
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.07
+version: 0.08
